@@ -1,5 +1,5 @@
 require 'json'
-
+# This class gets and interprets a product from a JSON file.
 class Product
 
   attr_reader :id, :product_type, :options
@@ -10,6 +10,15 @@ class Product
     JSON.parse(file)
   end
 
+  # defineOptions formats user given product type and options
+  # to resemble a product from the data.
+  # Input:
+  #     input_type (String): the product type given by the user
+  #     input_options (Set): options given by user, if any
+  #     mustHaves (Hash): an empty hash to modify and return
+  # Return:
+  #     The hash version of the user's input, resembling a product from the data
+  #     such that "product_type" and "options" map to the user's input.
   def self.defineOptions(input_type, input_options, mustHaves)
     mustHaves["product_type"] = input_type
     mustHaves["options"] = Hash.new
@@ -19,7 +28,7 @@ class Product
         when "male"
           mustHaves["options"]["gender"] = "male"
         when "female"
-          mustHaves["options"]["gender"] = "male"
+          mustHaves["options"]["gender"] = "female"
         when "red"
           mustHaves["options"]["color"] = "red"
         when "green"
@@ -42,11 +51,10 @@ class Product
           mustHaves["options"]["size"] = "2x-large"
         else
           puts opt + " is not a valid option for tshirts"
-          $stdout.flush
+          STDOUT.flush
         end
       end
     end
-
     if input_type.eql?("mug")
       for opt in input_options
         case opt
@@ -56,11 +64,10 @@ class Product
           mustHaves["options"]["type"] = "travel-mug"
         else
           puts opt + " is not a valid option for mugs"
-          $stdout.flush
+          STDOUT.flush
         end
       end
     end
-
     if input_type.eql?("sticker")
       for opt in input_options
         case opt
@@ -80,7 +87,7 @@ class Product
           mustHaves["options"]["style"] = "glossy"
         else
           puts opt + " is not a valid option for tshirts"
-          $stdout.flush
+          STDOUT.flush
         end
       end
     end

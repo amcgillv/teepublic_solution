@@ -1,15 +1,19 @@
 require 'json'
-require 'io/console'
 require_relative 'product'
+
+# This class sifts through all products, finding products that match the user's
+# input.
 
 class Inventory
 
- def initialize()
+  def initialize
     @productToOptions = Hash.new
   end
 
-  # builds hash map from product type to a hash of option name to set
-  # of the actual options
+  # parseInventory builds hash map from product type
+  # to a hash of option name to set of the actual options.
+  # Return
+  #      @productToOptions updated with Product data
   def parseInventory
     for p in Product.data
       if !(@productToOptions.has_key?(p["product_type"]))
@@ -25,6 +29,14 @@ class Inventory
     @productToOptions
   end
 
+  # searchOptions is a helper method that builds a hash with all
+  # of the options not given by the user.
+  # Input:
+  #     input_type (String): product type given by the user
+  #     input_options (Set): options given by user, if any
+  # Return:
+  #     A hash with product option types mapped to the available options
+  #     with user provided options excluded
   def searchOptions(input_type, input_options)
     mustHaves = Product.defineOptions(input_type, input_options, Hash.new)
     toReturn = Hash.new
@@ -44,13 +56,23 @@ class Inventory
       toReturn
   end
 
+  # getOptions is a helper method that builds a hash with all
+  # of the options not given by the user.
+  # Input:
+  #     input_type (String): product type given by the user
+  #     input_options (Set): options given by user, if any
+  # Return:
+  #     Print the message that there's no product of that type if input_type
+  #     in not avaliable, and returns an empty Hash.
+  #     Otherwise, it returns a hash with product option types mapped to the
+  #     available options with user provided options excluded.
   def getOptions(input_type, input_options)
     toReturn = Hash.new
     if @productToOptions.has_key?(input_type)
       toReturn = searchOptions(input_type, input_options)
     else
       puts "No product of that type"
-      $stdout.flush
+      STDOUT.flush
     end
     toReturn
   end

@@ -122,6 +122,11 @@ let(:product_data) {
           .to eq({"style" => Set["matte"]})
       end
 
+      it "should handle multiple options" do
+        expect(inventory_instance.getOptions("tshirt", Set["female", "red"]))
+          .to eq({"size" => Set["large"]})
+      end
+
       it "should return all sticker options" do
         expect(inventory_instance.getOptions("sticker", Set.new))
           .to eq({"style" => Set["matte", "glossy"],
